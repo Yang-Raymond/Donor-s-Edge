@@ -1,7 +1,19 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { getCurrentUser, signOutUser } from "../server/authentication";
 
 export default function Header() {
+
+    const handleLogout = async () => {
+        try {
+            await signOutUser();
+
+            window.location.href = '/';
+        } catch (error) {
+            console.error("Error signing out:", error);
+        }
+    };
+
     return (
         <nav className="fixed top-0 w-full bg-sky-100 backdrop-blur-sm z-50 shadow-sm">
             <div className="max-w-7xl mx-auto px-6 py-4">
@@ -13,12 +25,15 @@ export default function Header() {
                         </div>
                         <span className="text-xl font-semibold text-gray-900">ByYourSide Society</span>
                     </div>
-                    
+
                     {/* Navigation Links */}
                     <div className="hidden md:flex items-center space-x-8">
-                        <a href="#team" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Team</a>
-                        <a href="#initiatives" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Initiatives</a>
-                        <Link href="/login" className="bg-sky-500 text-white px-8 py-3 rounded-lg hover:bg-sky-600 transition font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105">Donor's Edge</Link>
+                        <Link href="/#team" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Team</Link>
+                        <Link href="/#initiatives" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Initiatives</Link>
+                        {getCurrentUser() ?
+                            <button onClick={handleLogout} className="bg-sky-500 text-white px-8 py-3 rounded-lg hover:bg-sky-600 transition font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105">Logout</button> :
+                            <Link href="/login" className="bg-sky-500 text-white px-8 py-3 rounded-lg hover:bg-sky-600 transition font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105">Donor's Edge</Link>
+                        }
                     </div>
                 </div>
             </div>
