@@ -2,12 +2,14 @@ import Image from 'next/image'
 
 export default function Header() {
     return (
-        <nav className="fixed top-0 w-full bg-gray-100 backdrop-blur-sm z-50 shadow-sm">
+        <nav className="fixed top-0 w-full bg-sky-100 backdrop-blur-sm z-50 shadow-sm">
             <div className="max-w-7xl mx-auto px-6 py-4">
                 <div className="flex justify-between items-center">
                     {/* Logo and Title */}
                     <div className="flex items-center gap-4">
-                        <Image src="/logo.svg" alt="ByYourSide Society Logo" width={50} height={50} />
+                        <div className="bg-sky-500 p-2 relative">
+                            <Image src="/logo.svg" alt="ByYourSide Society Logo" width={50} height={50} />
+                        </div>
                         <span className="text-xl font-semibold text-gray-900">ByYourSide Society</span>
                     </div>
                     

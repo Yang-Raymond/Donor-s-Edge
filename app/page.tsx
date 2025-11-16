@@ -22,7 +22,7 @@ export default function Home() {
             BYYOURSIDE SOCIETY
           </h1>
           <p className="text-2xl md:text-3xl text-white font-medium drop-shadow-md">
-            standing with our community, one person at a time.
+            Assisting and empowering the underpriveledged for a brighter tomorrow.
           </p>
         </div>
       </section>
