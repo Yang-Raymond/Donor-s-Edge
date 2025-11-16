@@ -1,6 +1,7 @@
 import Header from '@/app/components/header';
 import Footer from '@/app/components/footer';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -17,7 +18,7 @@ export default function Home() {
       }}>
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-sky-500/40 backdrop-blur-[2px]"></div>
-        
+
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight drop-shadow-lg">
             BYYOURSIDE SOCIETY
@@ -50,9 +51,6 @@ export default function Home() {
               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
                 Providing nutritious meals and food resources to those facing food insecurity in our community.
               </p>
-              <a href="#" className="inline-block bg-sky-500 text-white px-8 py-3 rounded-full hover:bg-sky-600 transition font-medium">
-                LEARN MORE
-              </a>
             </div>
 
             {/* Project Warmth */}
@@ -62,9 +60,6 @@ export default function Home() {
               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
                 Distributing warm clothing and essential items to help community members stay safe during cold weather.
               </p>
-              <a href="#" className="inline-block bg-sky-500 text-white px-8 py-3 rounded-full hover:bg-sky-600 transition font-medium">
-                LEARN MORE
-              </a>
             </div>
           </div>
         </div>
@@ -74,9 +69,9 @@ export default function Home() {
       <section className="py-24 px-6 bg-sky-500 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <blockquote className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
-            "EDUCATION IS THE MOST POWERFUL WEAPON WHICH YOU CAN USE TO CHANGE THE WORLD"
+            "WE MAKE A LIVING BY WHAT WE GET. WE MAKE A LIFE BY WHAT WE GIVE."
           </blockquote>
-          <p className="text-2xl font-medium">— NELSON MANDELA</p>
+          <p className="text-2xl font-medium">— WINSTON CHURCHILL</p>
         </div>
       </section>
 
@@ -89,41 +84,41 @@ export default function Home() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
+            <Link href="https://www.cnh.bc.ca/" className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
               <div className="aspect-[4/3] bg-white flex items-center justify-center p-6">
                 <Image src="/CNH.png" alt="Collingwood Neighbourhood House" width={200} height={150} className="object-contain" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                 <h3 className="text-white font-bold text-lg text-center">Collingwood Neighbourhood House</h3>
               </div>
-            </div>
+            </Link>
 
-            <div className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
+            <Link href="https://foodbank.bc.ca/" className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
               <div className="aspect-[4/3] bg-white flex items-center justify-center p-6">
                 <Image src="/GVFB.jpg" alt="Greater Vancouver Food Bank" width={200} height={150} className="object-contain" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                 <h3 className="text-white font-bold text-lg text-center">Greater Vancouver Food Bank</h3>
               </div>
-            </div>
+            </Link>
 
-            <div className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
+            <Link href="https://www.bigbrothersvancouver.com/" className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
               <div className="aspect-[4/3] bg-white flex items-center justify-center p-6">
                 <Image src="/BigBrothers.png" alt="Big Brothers of Greater Vancouver" width={200} height={150} className="object-contain" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                 <h3 className="text-white font-bold text-lg text-center">Big Brothers of Greater Vancouver</h3>
               </div>
-            </div>
+            </Link>
 
-            <div className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
+            <Link href="https://www.salvationarmy.ca/" className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
               <div className="aspect-[4/3] bg-white flex items-center justify-center p-6">
                 <Image src="/TheSalvationArmy.png" alt="The Salvation Army" width={200} height={150} className="object-contain" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                 <h3 className="text-white font-bold text-lg text-center">The Salvation Army</h3>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -133,25 +128,25 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center">OUR INSTAGRAM</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <a 
-              href="https://www.instagram.com/byyoursidesociety" 
-              target="_blank" 
+            <a
+              href="https://www.instagram.com/byyoursidesociety"
+              target="_blank"
               rel="noopener noreferrer"
               className="aspect-square rounded-lg hover:scale-105 transition cursor-pointer overflow-hidden shadow-lg"
             >
               <img src="/BYSSPic1.jpg" alt="ByYourSide Society Event" className="w-full h-full object-cover" />
             </a>
-            <a 
-              href="https://www.instagram.com/byyoursidesociety" 
-              target="_blank" 
+            <a
+              href="https://www.instagram.com/byyoursidesociety"
+              target="_blank"
               rel="noopener noreferrer"
               className="aspect-square rounded-lg hover:scale-105 transition cursor-pointer overflow-hidden shadow-lg"
             >
               <img src="/BYSSPic2.jpg" alt="ByYourSide Society Event" className="w-full h-full object-cover" />
             </a>
-            <a 
-              href="https://www.instagram.com/byyoursidesociety" 
-              target="_blank" 
+            <a
+              href="https://www.instagram.com/byyoursidesociety"
+              target="_blank"
               rel="noopener noreferrer"
               className="aspect-square rounded-lg hover:scale-105 transition cursor-pointer overflow-hidden shadow-lg"
             >
