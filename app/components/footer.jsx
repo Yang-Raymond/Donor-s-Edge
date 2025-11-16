@@ -1,33 +1,32 @@
 export default function Footer() {
     return (
-        <footer id="contact" className="py-16 px-6 bg-gray-900 text-white">
+        <footer id="contact" className="py-16 px-6 bg-sky-700 text-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-12 mb-12">
             <div>
               <h3 className="text-2xl font-bold mb-4">CONTACT US</h3>
-              <p className="text-gray-300">ADMIN@GARDENBANKSOCIETY.ORG</p>
+              <p className="text-gray-100">Byyoursidesociety@gmail.com</p>
             </div>
             <div>
               <h3 className="text-2xl font-bold mb-4">QUICK LINKS</h3>
               <div className="space-y-2">
-                <a href="#about" className="block text-gray-300 hover:text-white transition">ABOUT</a>
-                <a href="#initiatives" className="block text-gray-300 hover:text-white transition">ACTIVITIES</a>
-                <a href="#schools" className="block text-gray-300 hover:text-white transition">OUR TEAM</a>
-                <a href="#apply" className="block text-gray-300 hover:text-white transition">APPLY NOW</a>
+                <a href="#about" className="block text-gray-100 hover:text-white transition">ABOUT</a>
+                <a href="#initiatives" className="block text-gray-100 hover:text-white transition">INITIATIVES</a>
+                <a href="#organizations" className="block text-gray-100 hover:text-white transition">PARTNER ORGANIZATIONS</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdfMCZMJendPzbibU-I_YAZBHymW2lKr6-pmZihGRlGcp_GIQ/viewform" target="_blank" rel="noopener noreferrer" className="block text-gray-100 hover:text-white transition">APPLY NOW</a>
               </div>
             </div>
             <div>
               <h3 className="text-2xl font-bold mb-4">FOLLOW US</h3>
               <div className="flex space-x-4">
-                <a href="#" className="text-3xl hover:text-green-400 transition">📷</a>
-                <a href="#" className="text-3xl hover:text-green-400 transition">📘</a>
+                <a href="https://www.instagram.com/byyoursidesociety" target="_blank" rel="noopener noreferrer" className="text-3xl hover:text-white transition">�</a>
               </div>
             </div>
           </div>
-          <div className="border-t border-gray-700 pt-8 text-center text-gray-400">
-            <p className="mb-2">LOGO: KEVIN LIU | IT TEAM: LAYLA JOHNSON, CINDY LIU</p>
+          <div className="border-t border-sky-500 pt-8 text-center bg-sky-700">
+            <p className="mb-2">BYYOURSIDE SOCIETY - Assisting and empowering the underpriveledged for a brighter tomorrow.</p>
             <p className="text-sm">
-              GARDENBANK IS LEGALLY INCORPORATED UNDER THE SOCIETIES ACT OF BRITISH COLUMBIA. NON-PROFIT NUMBER: S0071965
+              © 2025 BYYOURSIDE SOCIETY. ALL RIGHTS RESERVED.
             </p>
           </div>
         </div>
