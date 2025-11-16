@@ -23,7 +23,7 @@ export default function OpportunitiesPage() {
   useEffect(() => {
     const unsubscribe = onAuthStateChange(async (currentUser) => {
       setUser(currentUser);
-      
+
       if (!currentUser) {
         redirect("/login");
         return;
@@ -73,9 +73,9 @@ export default function OpportunitiesPage() {
     <div className="min-h-screen bg-gradient-to-b from-[#1a1a2e] to-[#16213e]">
       <Header />
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-15">
         {/* Header Section */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 my-20">
           <h1 className="text-5xl font-bold text-white mb-4" style={{ textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
             Your Arbitrage Opportunities
           </h1>
@@ -108,7 +108,7 @@ export default function OpportunitiesPage() {
                   <div className="text-gray-300 text-sm uppercase tracking-wide">Active Opportunities</div>
                 </div>
               </div>
-              
+
               {/* Tier Progress */}
               <div className="mt-6 pt-6 border-t border-white/10">
                 <div className="flex items-center justify-between text-sm text-gray-300 mb-2">
@@ -181,7 +181,7 @@ export default function OpportunitiesPage() {
               </ol>
               <div className="mt-6 pt-6 border-t border-white/10">
                 <p className="text-sm text-gray-400">
-                  <strong className="text-white">Note:</strong> These opportunities are time-sensitive. 
+                  <strong className="text-white">Note:</strong> These opportunities are time-sensitive.
                   Odds can change quickly, so act fast to secure your arbitrage profit.
                 </p>
               </div>

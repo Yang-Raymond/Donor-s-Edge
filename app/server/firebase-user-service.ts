@@ -17,6 +17,7 @@ export interface UserData {
   arbitrageOpportunities: ArbitrageOpportunity[];
   createdAt: string;
   lastDonationDate?: string;
+  currentTier?: string; // Track current tier for the user
 }
 
 /**
@@ -74,6 +75,7 @@ export async function getOrCreateUser(userId: string, email: string): Promise<Us
     donations: [],
     arbitrageOpportunities: [],
     createdAt: new Date().toISOString(),
+    currentTier: "Bronze", // Default tier for new users
   };
 
   await userRef.set(newUser);
@@ -124,6 +126,7 @@ export async function addDonationAndAssignOpportunities(
     lastDonationDate: new Date().toISOString(),
     donations: admin.firestore.FieldValue.arrayUnion(donation),
     arbitrageOpportunities: selectedOpportunities, // Replace with new opportunities
+    currentTier: tier, // Update the user's current tier
   });
   
   return {
@@ -165,11 +168,12 @@ export async function getUserDonationInfo(userId: string): Promise<{
   }
   
   const userData = userSnap.data() as UserData;
-  const { tier } = calculateTier(0, userData.totalDonations);
+  // Use stored tier if available, otherwise calculate it
+  const currentTier = userData.currentTier || calculateTier(0, userData.totalDonations).tier;
   
   return {
     totalDonations: userData.totalDonations,
-    currentTier: tier,
+    currentTier,
     donations: userData.donations || [],
     opportunitiesCount: (userData.arbitrageOpportunities || []).length,
   };

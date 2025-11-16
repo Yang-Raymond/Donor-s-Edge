@@ -9,6 +9,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { User } from "firebase/auth";
+import { updateDonationStats } from "../server/firestore";
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -125,6 +126,9 @@ export default function StripeCheckout({
         setError(err.message || "Failed to initialize payment");
         onError?.(err.message || "Failed to initialize payment");
       } finally {
+        await updateDonationStats(amount / 100).catch((err) => {
+          console.error("Failed to update donation stats:", err);
+        });
         setLoading(false);
       }
     };
