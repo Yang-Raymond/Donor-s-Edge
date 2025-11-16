@@ -1,4 +1,4 @@
-import { auth } from "./connection_to_firebase";
+import { auth, db } from "./connection_to_firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -8,6 +8,8 @@ import {
   User,
   UserCredential,
 } from "firebase/auth";
+
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 /**
  * Sign in with email and password
@@ -26,15 +28,54 @@ export const signUpWithEmail = async (
   email: string,
   password: string
 ): Promise<UserCredential> => {
-  return await createUserWithEmailAndPassword(auth, email, password);
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    console.log("User created with UID:", userCredential.user.uid);
+    
+    // Create user document in Firestore
+    const userDocRef = doc(db, "users", userCredential.user.uid);
+    await setDoc(userDocRef, {
+      name: "",
+      address: "",
+      totalDonations: 0,
+      numTimesDonated: 0,
+    });
+    
+    console.log("User document created in Firestore successfully");
+    return userCredential;
+  } catch (error: any) {
+    console.error("Error in signUpWithEmail:", error.message);
+    throw error;
+  }
 };
 
 /**
  * Sign in with Google using popup
  */
 export const signInWithGoogle = async (): Promise<UserCredential> => {
-  const provider = new GoogleAuthProvider();
-  return await signInWithPopup(auth, provider);
+  try {
+    const provider = new GoogleAuthProvider();
+    const userCredential = await signInWithPopup(auth, provider);
+    
+    // Check if user document exists, create if not
+    const userDocRef = doc(db, "users", userCredential.user.uid);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (!userDoc.exists()) {
+      await setDoc(userDocRef, {
+        name: userCredential.user.displayName || "",
+        address: "",
+        totalDonations: 0,
+        numTimesDonated: 0,
+      });
+      console.log("New Google user document created in Firestore");
+    }
+    
+    return userCredential;
+  } catch (error: any) {
+    console.error("Error in signInWithGoogle:", error.message);
+    throw error;
+  }
 };
 
 /**
