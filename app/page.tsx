@@ -1,5 +1,6 @@
 import Header from '@/app/components/header';
 import Footer from '@/app/components/footer';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -89,8 +90,8 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
-              <div className="aspect-[4/3] bg-gradient-to-br from-sky-200 to-sky-400 flex items-center justify-center p-6">
-                <span className="text-5xl">🏘️</span>
+              <div className="aspect-[4/3] bg-white flex items-center justify-center p-6">
+                <Image src="/CNH.png" alt="Collingwood Neighbourhood House" width={200} height={150} className="object-contain" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                 <h3 className="text-white font-bold text-lg text-center">Collingwood Neighbourhood House</h3>
@@ -98,8 +99,8 @@ export default function Home() {
             </div>
 
             <div className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
-              <div className="aspect-[4/3] bg-gradient-to-br from-sky-200 to-sky-400 flex items-center justify-center p-6">
-                <span className="text-5xl">🍲</span>
+              <div className="aspect-[4/3] bg-white flex items-center justify-center p-6">
+                <Image src="/GVFB.jpg" alt="Greater Vancouver Food Bank" width={200} height={150} className="object-contain" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                 <h3 className="text-white font-bold text-lg text-center">Greater Vancouver Food Bank</h3>
@@ -107,8 +108,8 @@ export default function Home() {
             </div>
 
             <div className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
-              <div className="aspect-[4/3] bg-gradient-to-br from-sky-200 to-sky-400 flex items-center justify-center p-6">
-                <span className="text-5xl">👥</span>
+              <div className="aspect-[4/3] bg-white flex items-center justify-center p-6">
+                <Image src="/BigBrothers.png" alt="Big Brothers of Greater Vancouver" width={200} height={150} className="object-contain" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                 <h3 className="text-white font-bold text-lg text-center">Big Brothers of Greater Vancouver</h3>
@@ -116,8 +117,8 @@ export default function Home() {
             </div>
 
             <div className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition">
-              <div className="aspect-[4/3] bg-gradient-to-br from-sky-200 to-sky-400 flex items-center justify-center p-6">
-                <span className="text-5xl">⛪</span>
+              <div className="aspect-[4/3] bg-white flex items-center justify-center p-6">
+                <Image src="/TheSalvationArmy.png" alt="The Salvation Army" width={200} height={150} className="object-contain" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                 <h3 className="text-white font-bold text-lg text-center">The Salvation Army</h3>
