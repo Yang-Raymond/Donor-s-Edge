@@ -1,4 +1,4 @@
-import { auth, db } from "./connection_to_firebase";
+import { auth } from "./connection_to_firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -9,7 +9,7 @@ import {
   UserCredential,
 } from "firebase/auth";
 
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { createUserDocument, ensureUserDocument } from "./firestore";
 
 /**
  * Sign in with email and password
@@ -34,14 +34,8 @@ export const signUpWithEmail = async (
     console.log("User created with UID:", userCredential.user.uid);
     
     // Create user document in Firestore
-    const userDocRef = doc(db, "users", userCredential.user.uid);
-    await setDoc(userDocRef, {
-      name: name || "",
-      totalDonations: 0,
-      numTimesDonated: 0,
-    });
+    await createUserDocument(userCredential.user.uid, name);
     
-    console.log("User document created in Firestore successfully");
     return userCredential;
   } catch (error: any) {
     console.error("Error in signUpWithEmail:", error.message);
@@ -58,17 +52,10 @@ export const signInWithGoogle = async (): Promise<UserCredential> => {
     const userCredential = await signInWithPopup(auth, provider);
     
     // Check if user document exists, create if not
-    const userDocRef = doc(db, "users", userCredential.user.uid);
-    const userDoc = await getDoc(userDocRef);
-    
-    if (!userDoc.exists()) {
-      await setDoc(userDocRef, {
-        name: userCredential.user.displayName || "",
-        totalDonations: 0,
-        numTimesDonated: 0,
-      });
-      console.log("New Google user document created in Firestore");
-    }
+    await ensureUserDocument(
+      userCredential.user.uid,
+      userCredential.user.displayName || ""
+    );
     
     return userCredential;
   } catch (error: any) {
