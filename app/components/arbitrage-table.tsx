@@ -7,6 +7,11 @@ interface ArbitrageTableProps {
   loading?: boolean;
 }
 
+/**
+ * Display arbitrage betting opportunities in a table format
+ * @param opportunities - Array of arbitrage opportunities to display
+ * @param loading - Loading state indicator
+ */
 export default function ArbitrageTable({ opportunities, loading }: ArbitrageTableProps) {
   if (loading) {
     return (
@@ -60,7 +65,6 @@ export default function ArbitrageTable({ opportunities, loading }: ArbitrageTabl
           {opportunities.map((opp, index) => {
             const outcomeCells = [];
             
-            // Create cells for up to 3 outcomes
             for (let i = 0; i < 3; i++) {
               if (i < opp.outcomes.length) {
                 const outcome = opp.outcomes[i];

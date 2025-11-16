@@ -25,6 +25,11 @@ export interface ArbitrageOpportunity {
   timestamp: string;
 }
 
+/**
+ * Fetch arbitrage betting opportunities from external API
+ * @param request - Next.js request object
+ * @returns JSON response with filtered and formatted arbitrage opportunities
+ */
 export async function GET(request: NextRequest) {
   try {
     const response = await fetch("https://odds-api1.p.rapidapi.com/surebets", {
@@ -42,7 +47,6 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
     const parsed = Object.values(data);
 
-    // Filter and format the arbitrage opportunities
     const opportunities: ArbitrageOpportunity[] = [];
 
     for (const bet of parsed as any[]) {
@@ -52,18 +56,15 @@ export async function GET(request: NextRequest) {
       const outcomes = (market as any)?.outcomes || {};
       const outcomeNames = Object.keys(outcomes);
 
-      // Collect bookmaker names for each outcome
       const usedBookmakers = outcomeNames.map((key) => {
         const outcome = outcomes[key];
         return Object.keys(outcome.bookmakers)[0];
       });
 
-      // Skip if ANY bookmaker is blacklisted
       if (!usedBookmakers.every((bk) => !BLACKLISTED_BOOKMAKERS.includes(bk))) {
         continue;
       }
 
-      // Format outcomes
       const formattedOutcomes = outcomeNames.map((key) => {
         const outcome = outcomes[key];
         const firstBookieName = Object.keys(outcome.bookmakers)[0];
@@ -77,7 +78,6 @@ export async function GET(request: NextRequest) {
         };
       });
 
-      // Calculate profit
       const odds = formattedOutcomes.map((o) => o.price);
       let profit = 0;
       if (odds.length >= 2) {
@@ -85,7 +85,6 @@ export async function GET(request: NextRequest) {
         profit = (1 - implied) * 100;
       }
 
-      // Only include profitable opportunities
       if (profit > 0) {
         opportunities.push({
           id: `${bet.participant1}-${bet.participant2}-${Date.now()}-${Math.random()}`,
@@ -100,7 +99,6 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Sort by profit (highest first)
     opportunities.sort((a, b) => b.profit - a.profit);
 
     return NextResponse.json({

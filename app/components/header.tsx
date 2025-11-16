@@ -2,8 +2,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getCurrentUser, signOutUser } from "../server/authentication";
 
+/**
+ * Header component with navigation and authentication controls
+ */
 export default function Header() {
 
+    /**
+     * Handle user logout
+     */
     const handleLogout = async () => {
         try {
             await signOutUser();
@@ -18,7 +24,6 @@ export default function Header() {
         <nav className="fixed top-0 w-full bg-sky-100 backdrop-blur-sm z-50 shadow-sm">
             <div className="max-w-7xl mx-auto px-6 py-4">
                 <div className="flex justify-between items-center">
-                    {/* Logo and Title */}
                     <div className="flex items-center gap-4">
                         <div className="bg-sky-500 p-2 relative">
                             <Image src="/logo.svg" alt="ByYourSide Society Logo" width={50} height={50} />
@@ -26,7 +31,6 @@ export default function Header() {
                         <span className="text-xl font-semibold text-gray-900">ByYourSide Society</span>
                     </div>
 
-                    {/* Navigation Links */}
                     <div className="hidden md:flex items-center space-x-8">
                         <Link href="/#organizations" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Partners</Link>
                         <Link href="/#initiatives" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Initiatives</Link>

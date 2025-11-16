@@ -2,15 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { addDonationAndAssignOpportunities } from "../../server/firebase-user-service";
 
 /**
- * TEMPORARY TEST ENDPOINT
- * This simulates what the Stripe webhook does
- * Use this for testing until Stripe webhook is set up
- * 
- * Usage: After making a payment, call this endpoint with:
- * POST /api/test-assign-opportunities
- * Body: { userId, userEmail, amount, paymentId }
+ * Test endpoint to manually assign opportunities to users
+ * Used for testing donation and opportunity assignment flow
+ * @param request - Next.js request object with userId, userEmail, amount, paymentId
+ * @returns JSON response with assignment results
  */
-
 export async function POST(request: NextRequest) {
   try {
     const { userId, userEmail, amount, paymentId } = await request.json();
@@ -24,7 +20,6 @@ export async function POST(request: NextRequest) {
 
     console.log(`[TEST] Processing donation for user ${userId}: $${amount}`);
 
-    // Fetch current arbitrage opportunities
     const arbitrageResponse = await fetch(
       `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/fetch-arbitrage`,
       { method: "GET" }
@@ -41,7 +36,6 @@ export async function POST(request: NextRequest) {
 
     console.log(`[TEST] Found ${arbitrageData.opportunities.length} opportunities`);
 
-    // Assign opportunities to user based on donation tier
     const result = await addDonationAndAssignOpportunities(
       userId,
       userEmail,

@@ -8,6 +8,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
+/**
+ * Handle Stripe webhook events for payment processing
+ * @param request - Next.js request object containing webhook payload
+ * @returns JSON response indicating webhook received
+ */
 export async function POST(request: NextRequest) {
   console.log("🔔 Webhook received!");
   
@@ -25,7 +30,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify webhook signature
     let event: Stripe.Event;
     try {
       event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
@@ -37,14 +41,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Handle the payment_intent.succeeded event
     if (event.type === "payment_intent.succeeded") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
       
       console.log("✅ Payment succeeded:", paymentIntent.id);
       console.log("💰 Amount:", paymentIntent.amount / 100);
       
-      // Extract metadata (we'll need to add this when creating payment intent)
       const userId = paymentIntent.metadata?.userId;
       const userEmail = paymentIntent.metadata?.userEmail;
       
@@ -61,7 +63,6 @@ export async function POST(request: NextRequest) {
       try {
         console.log("🎯 Fetching arbitrage opportunities...");
         
-        // Fetch current arbitrage opportunities
         const arbitrageResponse = await fetch(
           `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/fetch-arbitrage`,
           { method: "GET" }
@@ -81,7 +82,6 @@ export async function POST(request: NextRequest) {
 
         console.log("💾 Assigning opportunities to user...");
         
-        // Assign opportunities to user based on donation tier
         const result = await addDonationAndAssignOpportunities(
           userId,
           userEmail,

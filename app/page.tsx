@@ -3,20 +3,20 @@ import Footer from '@/app/components/footer';
 import Image from 'next/image';
 import Link from 'next/link';
 
+/**
+ * Home page component for ByYourSide Society
+ */
 export default function Home() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
       <Header />
 
-      {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-6 min-h-[500px] flex items-center" style={{
         backgroundImage: 'url(/banner.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center top',
         backgroundRepeat: 'no-repeat'
       }}>
-        {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-sky-500/40 backdrop-blur-[2px]"></div>
 
         <div className="max-w-7xl mx-auto text-center relative z-10">
@@ -29,7 +29,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section */}
       <section id="about" className="py-20 px-6 bg-white">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8 text-center">ABOUT US</h2>
@@ -39,12 +38,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Initiatives Section */}
       <section id="initiatives" className="py-20 px-6 bg-sky-50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-16 text-center">INITIATIVES</h2>
           <div className="grid md:grid-cols-2 gap-12">
-            {/* Operation Hunger */}
             <div className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-xl transition border-t-4 border-sky-400">
               <div className="text-5xl mb-6">🍽️</div>
               <h3 className="text-3xl font-bold text-sky-600 mb-4">OPERATION HUNGER</h3>
@@ -53,7 +50,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Project Warmth */}
             <div className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-xl transition border-t-4 border-sky-400">
               <div className="text-5xl mb-6">👕</div>
               <h3 className="text-3xl font-bold text-sky-600 mb-4">PROJECT WARMTH</h3>
@@ -65,7 +61,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Quote Section */}
       <section className="py-24 px-6 bg-sky-500 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <blockquote className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
@@ -75,7 +70,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Partner Organizations Section */}
       <section id="organizations" className="py-20 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 text-center">PARTNER ORGANIZATIONS</h2>
@@ -123,7 +117,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Instagram Section */}
       <section className="py-20 px-6 bg-sky-50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center">OUR INSTAGRAM</h2>
@@ -156,7 +149,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

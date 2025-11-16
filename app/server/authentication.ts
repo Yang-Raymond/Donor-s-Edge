@@ -13,6 +13,9 @@ import { createUserDocument, ensureUserDocument } from "./firestore";
 
 /**
  * Sign in with email and password
+ * @param email - User's email address
+ * @param password - User's password
+ * @returns Promise resolving to UserCredential
  */
 export const signInWithEmail = async (
   email: string,
@@ -23,6 +26,10 @@ export const signInWithEmail = async (
 
 /**
  * Create a new user account with email and password
+ * @param email - User's email address
+ * @param name - User's display name
+ * @param password - User's password
+ * @returns Promise resolving to UserCredential
  */
 export const signUpWithEmail = async (
   email: string,
@@ -33,7 +40,6 @@ export const signUpWithEmail = async (
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     console.log("User created with UID:", userCredential.user.uid);
     
-    // Create user document in Firestore
     await createUserDocument(userCredential.user.uid, name);
     
     return userCredential;
@@ -44,14 +50,14 @@ export const signUpWithEmail = async (
 };
 
 /**
- * Sign in with Google using popup
+ * Sign in with Google using popup authentication
+ * @returns Promise resolving to UserCredential
  */
 export const signInWithGoogle = async (): Promise<UserCredential> => {
   try {
     const provider = new GoogleAuthProvider();
     const userCredential = await signInWithPopup(auth, provider);
     
-    // Check if user document exists, create if not
     await ensureUserDocument(
       userCredential.user.uid,
       userCredential.user.displayName || ""
@@ -66,6 +72,7 @@ export const signInWithGoogle = async (): Promise<UserCredential> => {
 
 /**
  * Sign out the current user
+ * @returns Promise resolving to void
  */
 export const signOutUser = async (): Promise<void> => {
   return await signOut(auth);
@@ -73,6 +80,7 @@ export const signOutUser = async (): Promise<void> => {
 
 /**
  * Get the current authenticated user
+ * @returns Current user or null if not authenticated
  */
 export const getCurrentUser = (): User | null => {
   return auth.currentUser;
@@ -80,6 +88,8 @@ export const getCurrentUser = (): User | null => {
 
 /**
  * Listen to authentication state changes
+ * @param callback - Function to call when auth state changes
+ * @returns Function to unsubscribe from auth state changes
  */
 export const onAuthStateChange = (
   callback: (user: User | null) => void

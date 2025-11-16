@@ -12,6 +12,9 @@ import Footer from "../components/footer";
 import Header from "../components/header";
 import { redirect } from "next/navigation";
 
+/**
+ * Login page component with email and Google authentication
+ */
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +24,6 @@ export default function Login() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Listen to auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChange((user) => {
       setUser(user);
@@ -30,6 +32,9 @@ export default function Login() {
     return () => unsubscribe();
   }, []);
 
+  /**
+   * Handle email/password authentication
+   */
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -41,7 +46,6 @@ export default function Login() {
       } else {
         await signInWithEmail(email, password);
       }
-      // User state will be updated via onAuthStateChange
     } catch (err: any) {
       setError(err.message || "Authentication failed");
     } finally {
@@ -49,13 +53,15 @@ export default function Login() {
     }
   };
 
+  /**
+   * Handle Google sign-in
+   */
   const handleGoogleSignIn = async () => {
     setError("");
     setLoading(true);
 
     try {
       await signInWithGoogle();
-      // User state will be updated via onAuthStateChange
     } catch (err: any) {
       setError(err.message || "Google sign-in failed");
     } finally {

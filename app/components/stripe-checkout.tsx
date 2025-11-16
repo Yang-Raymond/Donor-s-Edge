@@ -11,7 +11,6 @@ import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { User } from "firebase/auth";
 import { updateDonationStats } from "../server/firestore";
 
-// Initialize Stripe with your publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 interface CheckoutFormProps {
@@ -20,12 +19,21 @@ interface CheckoutFormProps {
   onError?: (error: string) => void;
 }
 
+/**
+ * Checkout form component for processing Stripe payments
+ * @param amount - Payment amount in cents
+ * @param onSuccess - Callback function on successful payment
+ * @param onError - Callback function on payment error
+ */
 function CheckoutForm({ amount, onSuccess, onError }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  /**
+   * Handle form submission for payment processing
+   */
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -82,7 +90,7 @@ function CheckoutForm({ amount, onSuccess, onError }: CheckoutFormProps) {
 interface StripeCheckoutProps {
   amount: number;
   description?: string;
-  user: User; // Current authenticated user
+  user: User;
   onSuccess?: () => void;
   onError?: (error: string) => void;
 }
@@ -99,7 +107,9 @@ export default function StripeCheckout({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Create PaymentIntent as soon as the component loads
+    /**
+     * Create payment intent when component loads
+     */
     const createPaymentIntent = async () => {
       try {
         const response = await fetch("/api/create-payment-intent", {

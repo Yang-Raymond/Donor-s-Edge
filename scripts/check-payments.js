@@ -1,11 +1,7 @@
-// Quick script to check recent Stripe payments
-// Run with: node scripts/check-payments.js
-
 const Stripe = require('stripe');
 const fs = require('fs');
 const path = require('path');
 
-// Read .env.local file
 const envPath = path.join(__dirname, '..', '.env.local');
 const envContent = fs.readFileSync(envPath, 'utf8');
 const secretKey = envContent.match(/STRIPE_SECRET_KEY=(.+)/)[1];
@@ -14,11 +10,13 @@ const stripe = new Stripe(secretKey, {
   apiVersion: '2025-10-29.clover',
 });
 
+/**
+ * Check recent Stripe payments and display summary
+ */
 async function checkRecentPayments() {
   try {
     console.log('🔍 Fetching recent payments from Stripe...\n');
 
-    // Get the last 10 payment intents
     const paymentIntents = await stripe.paymentIntents.list({
       limit: 10,
     });
@@ -46,7 +44,6 @@ async function checkRecentPayments() {
       console.log('');
     });
 
-    // Summary
     const successful = paymentIntents.data.filter(p => p.status === 'succeeded').length;
     const totalAmount = paymentIntents.data
       .filter(p => p.status === 'succeeded')

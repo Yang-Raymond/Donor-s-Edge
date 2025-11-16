@@ -4,6 +4,9 @@ import { doc, getDoc, updateDoc, increment, setDoc } from 'firebase/firestore';
 
 /**
  * Create a new user document in Firestore
+ * @param uid - Firebase user ID
+ * @param name - User's display name
+ * @returns Promise resolving to void
  */
 export const createUserDocument = async (
     uid: string,
@@ -14,13 +17,16 @@ export const createUserDocument = async (
         name: name || "",
         totalDonations: 0,
         numTimesDonated: 0,
-        currentTier: "Bronze", // Default tier for new users
+        currentTier: "Bronze",
     });
     console.log("User document created in Firestore successfully");
 };
 
 /**
- * Ensure user document exists, create if not
+ * Ensure user document exists in Firestore, create if it doesn't
+ * @param uid - Firebase user ID
+ * @param name - User's display name
+ * @returns Promise resolving to void
  */
 export const ensureUserDocument = async (
     uid: string,
@@ -34,12 +40,17 @@ export const ensureUserDocument = async (
             name: name || "",
             totalDonations: 0,
             numTimesDonated: 0,
-            currentTier: "Bronze", // Default tier for new users
+            currentTier: "Bronze",
         });
         console.log("New user document created in Firestore");
     }
 };
 
+/**
+ * Update user's donation statistics
+ * @param amount - Donation amount in dollars
+ * @returns Promise resolving to void
+ */
 export const updateDonationStats = async (
     amount: number,
 ): Promise<void> => {
@@ -55,7 +66,9 @@ export const updateDonationStats = async (
 }
 
 /**
- * Calculate and update user's tier based on total donations
+ * Calculate user's tier based on total donations
+ * @param totalDonations - Total amount donated
+ * @returns Tier name as string
  */
 export const calculateAndUpdateTier = (totalDonations: number): string => {
     let tier = "Bronze";
@@ -73,6 +86,9 @@ export const calculateAndUpdateTier = (totalDonations: number): string => {
 
 /**
  * Update user's tier in Firestore
+ * @param uid - Firebase user ID
+ * @param tier - Tier name to set
+ * @returns Promise resolving to void
  */
 export const updateUserTier = async (uid: string, tier: string): Promise<void> => {
     const userDocRef = doc(db, "users", uid);

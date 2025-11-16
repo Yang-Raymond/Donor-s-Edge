@@ -1,16 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-// Initialize Stripe with your secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-10-29.clover",
 });
 
+/**
+ * Create a Stripe payment intent
+ * @param request - Next.js request object containing payment details
+ * @returns JSON response with client secret or error
+ */
 export async function POST(request: NextRequest) {
   try {
     const { amount, currency = "usd", description, userId, userEmail } = await request.json();
 
-    // Validate the amount
     if (!amount || amount < 50) {
       return NextResponse.json(
         { error: "Amount must be at least $0.50" },
@@ -18,7 +21,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate user info for tracking donations
     if (!userId || !userEmail) {
       return NextResponse.json(
         { error: "User information is required" },
@@ -26,9 +28,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount), // Amount in cents
+      amount: Math.round(amount),
       currency: currency,
       description: description || "Donation",
       metadata: {

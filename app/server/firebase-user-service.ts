@@ -17,19 +17,21 @@ export interface UserData {
   arbitrageOpportunities: ArbitrageOpportunity[];
   createdAt: string;
   lastDonationDate?: string;
-  currentTier?: string; // Track current tier for the user
+  currentTier?: string;
 }
 
 /**
- * Calculate tier based on donation amount and lifetime total
+ * Calculate user tier based on donation amount and lifetime total
+ * @param currentDonation - Amount of current donation
+ * @param lifetimeTotal - Total lifetime donations
+ * @returns Object containing tier name and number of opportunities
  */
 export function calculateTier(currentDonation: number, lifetimeTotal: number): {
   tier: string;
   opportunitiesCount: number;
 } {
-  // Check lifetime total first for tier upgrades
   if (lifetimeTotal >= 50) {
-    return { tier: "Platinum", opportunitiesCount: -1 }; // -1 means all
+    return { tier: "Platinum", opportunitiesCount: -1 };
   }
   
   if (lifetimeTotal >= 15) {
@@ -40,7 +42,6 @@ export function calculateTier(currentDonation: number, lifetimeTotal: number): {
     return { tier: "Silver", opportunitiesCount: 5 };
   }
   
-  // If lifetime total doesn't qualify for upgrade, use current donation
   if (currentDonation >= 50) {
     return { tier: "Platinum", opportunitiesCount: -1 };
   }
@@ -53,12 +54,14 @@ export function calculateTier(currentDonation: number, lifetimeTotal: number): {
     return { tier: "Silver", opportunitiesCount: 5 };
   }
   
-  // Bronze tier (minimum $1)
   return { tier: "Bronze", opportunitiesCount: 3 };
 }
 
 /**
  * Get or create user document in Firestore
+ * @param userId - Firebase user ID
+ * @param email - User's email address
+ * @returns Promise resolving to UserData
  */
 export async function getOrCreateUser(userId: string, email: string): Promise<UserData> {
   const userRef = adminDb.collection("users").doc(userId);
@@ -68,14 +71,13 @@ export async function getOrCreateUser(userId: string, email: string): Promise<Us
     return userSnap.data() as UserData;
   }
 
-  // Create new user
   const newUser: UserData = {
     email,
     totalDonations: 0,
     donations: [],
     arbitrageOpportunities: [],
     createdAt: new Date().toISOString(),
-    currentTier: "Bronze", // Default tier for new users
+    currentTier: "Bronze",
   };
 
   await userRef.set(newUser);
@@ -83,7 +85,13 @@ export async function getOrCreateUser(userId: string, email: string): Promise<Us
 }
 
 /**
- * Add donation and assign arbitrage opportunities
+ * Add donation and assign arbitrage opportunities to user
+ * @param userId - Firebase user ID
+ * @param email - User's email address
+ * @param amount - Donation amount in dollars
+ * @param paymentId - Stripe payment ID
+ * @param opportunities - Array of available arbitrage opportunities
+ * @returns Promise resolving to object with tier, count, and assigned opportunities
  */
 export async function addDonationAndAssignOpportunities(
   userId: string,
@@ -94,24 +102,18 @@ export async function addDonationAndAssignOpportunities(
 ): Promise<{ tier: string; opportunitiesCount: number; opportunities: ArbitrageOpportunity[] }> {
   const userRef = adminDb.collection("users").doc(userId);
   
-  // Get current user data
   const userData = await getOrCreateUser(userId, email);
   const newLifetimeTotal = userData.totalDonations + amount;
   
-  // Calculate tier based on current donation and lifetime total
   const { tier, opportunitiesCount } = calculateTier(amount, newLifetimeTotal);
   
-  // Select opportunities based on tier
   let selectedOpportunities: ArbitrageOpportunity[];
   if (opportunitiesCount === -1) {
-    // Platinum: All opportunities
     selectedOpportunities = opportunities;
   } else {
-    // Take top X opportunities
     selectedOpportunities = opportunities.slice(0, opportunitiesCount);
   }
   
-  // Create donation record
   const donation: UserDonation = {
     amount,
     date: new Date().toISOString(),
@@ -120,13 +122,12 @@ export async function addDonationAndAssignOpportunities(
     opportunitiesCount: selectedOpportunities.length,
   };
   
-  // Update user document
   await userRef.update({
     totalDonations: admin.firestore.FieldValue.increment(amount),
     lastDonationDate: new Date().toISOString(),
     donations: admin.firestore.FieldValue.arrayUnion(donation),
-    arbitrageOpportunities: selectedOpportunities, // Replace with new opportunities
-    currentTier: tier, // Update the user's current tier
+    arbitrageOpportunities: selectedOpportunities,
+    currentTier: tier,
   });
   
   return {
@@ -138,6 +139,8 @@ export async function addDonationAndAssignOpportunities(
 
 /**
  * Get user's arbitrage opportunities
+ * @param userId - Firebase user ID
+ * @returns Promise resolving to array of ArbitrageOpportunity
  */
 export async function getUserOpportunities(userId: string): Promise<ArbitrageOpportunity[]> {
   const userRef = adminDb.collection("users").doc(userId);
@@ -152,7 +155,9 @@ export async function getUserOpportunities(userId: string): Promise<ArbitrageOpp
 }
 
 /**
- * Get user's donation history and tier info
+ * Get user's donation history and tier information
+ * @param userId - Firebase user ID
+ * @returns Promise resolving to donation info object or null if user not found
  */
 export async function getUserDonationInfo(userId: string): Promise<{
   totalDonations: number;
@@ -168,7 +173,6 @@ export async function getUserDonationInfo(userId: string): Promise<{
   }
   
   const userData = userSnap.data() as UserData;
-  // Use stored tier if available, otherwise calculate it
   const currentTier = userData.currentTier || calculateTier(0, userData.totalDonations).tier;
   
   return {

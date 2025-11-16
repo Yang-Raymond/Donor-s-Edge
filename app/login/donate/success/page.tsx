@@ -6,14 +6,34 @@ import Link from "next/link";
 import Header from "../../../components/header";
 import Footer from "../../../components/footer";
 
+/**
+ * PaymentSuccessPage Component
+ * 
+ * Handles the post-payment flow by:
+ * 1. Extracting payment parameters from the URL
+ * 2. Verifying payment completion
+ * 3. Displaying success/error UI accordingly
+ * 
+ * @returns {JSX.Element} The payment success/error page
+ */
 export default function PaymentSuccessPage() {
   const searchParams = useSearchParams();
+  
+  // Track the current payment verification status
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
 
+  /**
+   * Effect: Verify payment completion on component mount
+   * 
+   * Checks for required Stripe payment parameters in the URL.
+   * If both payment_intent and payment_intent_client_secret exist,
+   * the payment is considered successful.
+   */
   useEffect(() => {
     const paymentIntent = searchParams.get("payment_intent");
     const paymentIntentClientSecret = searchParams.get("payment_intent_client_secret");
 
+    // Verify both required parameters are present
     if (paymentIntent && paymentIntentClientSecret) {
       setStatus("success");
     } else {

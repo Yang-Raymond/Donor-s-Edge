@@ -6,12 +6,14 @@ import Footer from '@/app/components/footer';
 import Image from 'next/image';
 import Link from 'next/link';
 
+/**
+ * Donation portal page explaining arbitrage betting rewards program
+ */
 export default function DonationPortal() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
       <Header />
 
-      {/* Hero Section */}
       <section className="relative pt-32 pb-16 px-6 bg-sky-600">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
@@ -24,7 +26,6 @@ export default function DonationPortal() {
             Every contribution, no matter the size, makes a real impact in someone's life.
           </p>
           
-          {/* Stripe Donation Button */}
           <Link
             href="/login/donate"
             className="inline-block bg-white text-sky-600 px-8 py-4 rounded-xl hover:bg-sky-50 transition duration-200 font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-105 mr-4"
@@ -39,7 +40,6 @@ export default function DonationPortal() {
             🎯 View My Opportunities
           </Link>
           
-          {/* Tax Receipt Information */}
           <div className="mt-8 max-w-2xl mx-auto bg-white/10 backdrop-blur-sm border-2 border-white/30 rounded-xl p-6">
             <div className="flex items-start gap-4">
               <div className="text-3xl">📜</div>
@@ -55,7 +55,6 @@ export default function DonationPortal() {
         </div>
       </section>
 
-      {/* Donor Rewards Program */}
       <section className="py-16 px-6 bg-gradient-to-r from-green-50 to-emerald-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -118,7 +117,6 @@ export default function DonationPortal() {
         </div>
       </section>
 
-      {/* What is Arbitrage Betting */}
       <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -156,7 +154,6 @@ export default function DonationPortal() {
             </div>
           </div>
 
-          {/* Example */}
           <div className="bg-gradient-to-r from-blue-50 to-sky-50 rounded-2xl shadow-xl p-8 md:p-12">
             <h3 className="text-3xl font-bold text-gray-900 mb-6 text-center">
               📈 Real Example: How Arbitrage Betting Works
@@ -214,7 +211,6 @@ export default function DonationPortal() {
         </div>
       </section>
 
-      {/* Why It's a Sure-Fire Win */}
       <section className="py-16 px-6 bg-gradient-to-r from-purple-50 to-pink-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center">
@@ -281,7 +277,6 @@ export default function DonationPortal() {
         </div>
       </section>
 
-      {/* How to Get Started */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center">
@@ -352,7 +347,6 @@ export default function DonationPortal() {
         </div>
       </section>
 
-      {/* FAQ Section */}
       <section className="py-16 px-6 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">

@@ -9,6 +9,9 @@ import StripeCheckout from "../../components/stripe-checkout";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 
+/**
+ * Donation page component for processing user donations
+ */
 export default function DonatePage() {
   const [amount, setAmount] = useState(2500); // Default $25.00
   const [customAmount, setCustomAmount] = useState("");
@@ -17,7 +20,6 @@ export default function DonatePage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Check authentication
   useEffect(() => {
     const unsubscribe = onAuthStateChange((currentUser) => {
       setUser(currentUser);
@@ -30,14 +32,20 @@ export default function DonatePage() {
     return () => unsubscribe();
   }, []);
 
-  const predefinedAmounts = [1000, 2500, 5000, 10000]; // $10, $25, $50, $100
+  const predefinedAmounts = [1000, 2500, 5000, 10000];
 
+  /**
+   * Handle selection of predefined donation amount
+   */
   const handleAmountSelect = (amountInCents: number) => {
     setAmount(amountInCents);
     setSelectedAmount(amountInCents);
     setCustomAmount("");
   };
 
+  /**
+   * Handle custom donation amount input
+   */
   const handleCustomAmount = (value: string) => {
     setCustomAmount(value);
     setSelectedAmount(null);
@@ -47,17 +55,25 @@ export default function DonatePage() {
     }
   };
 
+  /**
+   * Proceed to payment checkout
+   */
   const handleProceedToPayment = () => {
     if (amount >= 50) {
       setShowCheckout(true);
     }
   };
 
+  /**
+   * Handle successful payment
+   */
   const handleSuccess = () => {
-    // Payment successful
     console.log("Payment successful!");
   };
 
+  /**
+   * Handle payment error
+   */
   const handleError = (error: string) => {
     console.error("Payment error:", error);
   };
@@ -75,7 +91,7 @@ export default function DonatePage() {
   }
 
   if (!user) {
-    return null; // Will redirect to login
+    return null;
   }
 
   return (
@@ -83,7 +99,6 @@ export default function DonatePage() {
       <Header />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
         <div className="max-w-2xl mx-auto">
-          {/* Back to login link */}
           <Link
             href="/login"
             className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6"
@@ -114,7 +129,6 @@ export default function DonatePage() {
 
             {!showCheckout ? (
               <div className="space-y-6">
-                {/* Predefined amounts */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Select an amount
@@ -136,7 +150,6 @@ export default function DonatePage() {
                   </div>
                 </div>
 
-                {/* Custom amount */}
                 <div>
                   <label
                     htmlFor="customAmount"
@@ -164,7 +177,6 @@ export default function DonatePage() {
                   </p>
                 </div>
 
-                {/* Total */}
                 <div className="bg-gray-50 p-4 rounded-md">
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-medium text-gray-700">
@@ -176,7 +188,6 @@ export default function DonatePage() {
                   </div>
                 </div>
 
-                {/* Proceed button */}
                 <button
                   onClick={handleProceedToPayment}
                   disabled={amount < 50}
@@ -187,7 +198,6 @@ export default function DonatePage() {
               </div>
             ) : (
               <div className="space-y-6">
-                {/* Amount summary */}
                 <div className="bg-blue-50 border border-blue-200 p-4 rounded-md">
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-medium text-gray-700">
@@ -199,7 +209,6 @@ export default function DonatePage() {
                   </div>
                 </div>
 
-                {/* Stripe checkout */}
                 <StripeCheckout
                   amount={amount}
                   description="Donation"
@@ -208,7 +217,6 @@ export default function DonatePage() {
                   onError={handleError}
                 />
 
-                {/* Back button */}
                 <button
                   onClick={() => setShowCheckout(false)}
                   className="w-full bg-gray-100 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-200 transition duration-200"
@@ -218,7 +226,6 @@ export default function DonatePage() {
               </div>
             )}
 
-            {/* Security badge */}
             <div className="mt-8 pt-6 border-t border-gray-200">
               <div className="flex items-center justify-center text-sm text-gray-500">
                 <svg

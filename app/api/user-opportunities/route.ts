@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getUserOpportunities, getUserDonationInfo } from "../../server/firebase-user-service";
 
+/**
+ * Get user's arbitrage opportunities and donation information
+ * @param request - Next.js request object with userId query parameter
+ * @returns JSON response with opportunities and donation info
+ */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -13,7 +18,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch user data
     const [opportunities, donationInfo] = await Promise.all([
       getUserOpportunities(userId),
       getUserDonationInfo(userId),

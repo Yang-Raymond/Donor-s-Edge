@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { FaInstagram } from 'react-icons/fa';
-
+/**
+ * Footer Component
+ */
 export default function Footer() {
     return (
         <footer id="contact" className="py-16 px-6 bg-sky-700 text-white">

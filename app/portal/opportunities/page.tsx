@@ -10,6 +10,9 @@ import Footer from "../../components/footer";
 import ArbitrageTable from "../../components/arbitrage-table";
 import { ArbitrageOpportunity } from "../../api/fetch-arbitrage/route";
 
+/**
+ * User opportunities page displaying assigned arbitrage bets
+ */
 export default function OpportunitiesPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -30,7 +33,6 @@ export default function OpportunitiesPage() {
       }
 
       try {
-        // Fetch user's opportunities and donation info from API
         const response = await fetch(`/api/user-opportunities?userId=${currentUser.uid}`);
         const data = await response.json();
 
@@ -66,7 +68,7 @@ export default function OpportunitiesPage() {
   }
 
   if (!user) {
-    return null; // Will redirect to login
+    return null;
   }
 
   return (
@@ -74,7 +76,6 @@ export default function OpportunitiesPage() {
       <Header />
 
       <div className="container mx-auto px-4 py-15">
-        {/* Header Section */}
         <div className="text-center mb-12 my-20">
           <h1 className="text-5xl font-bold text-white mb-4" style={{ textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)' }}>
             Your Arbitrage Opportunities
@@ -84,7 +85,6 @@ export default function OpportunitiesPage() {
           </p>
         </div>
 
-        {/* User Stats Card */}
         {donationInfo && (
           <div className="max-w-4xl mx-auto mb-12">
             <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl p-8 backdrop-blur-sm border border-white/10">
@@ -109,7 +109,6 @@ export default function OpportunitiesPage() {
                 </div>
               </div>
 
-              {/* Tier Progress */}
               <div className="mt-6 pt-6 border-t border-white/10">
                 <div className="flex items-center justify-between text-sm text-gray-300 mb-2">
                   <span>Bronze</span>
@@ -130,7 +129,6 @@ export default function OpportunitiesPage() {
           </div>
         )}
 
-        {/* Call to Action if no opportunities */}
         {opportunities.length === 0 && (
           <div className="max-w-2xl mx-auto mb-12">
             <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-8 text-center">
@@ -151,12 +149,10 @@ export default function OpportunitiesPage() {
           </div>
         )}
 
-        {/* Arbitrage Table */}
         <div className="mb-12">
           <ArbitrageTable opportunities={opportunities} loading={false} />
         </div>
 
-        {/* Additional Info */}
         {opportunities.length > 0 && (
           <div className="max-w-4xl mx-auto">
             <div className="bg-white/5 rounded-xl p-6 border border-white/10">
@@ -187,7 +183,6 @@ export default function OpportunitiesPage() {
               </div>
             </div>
 
-            {/* Donate More Button */}
             <div className="mt-8 text-center">
               <Link
                 href="/login/donate"
