@@ -11,6 +11,7 @@ import {
 } from "../server/authentication";
 import Footer from "../components/footer";
 import Header from "../components/header";
+import { redirect } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -62,37 +63,10 @@ export default function Login() {
     }
   };
 
-  const handleSignOut = async () => {
-    try {
-      await signOutUser();
-      setEmail("");
-      setPassword("");
-      // User state will be updated via onAuthStateChange
-    } catch (err: any) {
-      setError(err.message || "Sign out failed");
-    }
-  };
-
   if (user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-            Welcome!
-          </h2>
-          <div className="text-center mb-6">
-            <p className="text-gray-600 mb-2">Signed in as:</p>
-            <p className="font-semibold text-gray-800">{user.email}</p>
-          </div>
-          <button
-            onClick={handleSignOut}
-            className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition duration-200"
-          >
-            Sign Out
-          </button>
-        </div>
-      </div>
-    );
+      redirect("/portal")
+    ) 
   }
 
   return (
