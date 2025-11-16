@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Header from "../../../components/header";
@@ -16,7 +16,8 @@ import Footer from "../../../components/footer";
  * 
  * @returns {JSX.Element} The payment success/error page
  */
-export default function PaymentSuccessPage() {
+
+function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   
   // Track the current payment verification status
@@ -42,11 +43,9 @@ export default function PaymentSuccessPage() {
   }, [searchParams]);
 
   return (
-    <div>
-      <Header />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-          {status === "loading" && (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+        {status === "loading" && (
             <div className="flex justify-center items-center py-8">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
             </div>
@@ -150,7 +149,25 @@ export default function PaymentSuccessPage() {
           )}
         </div>
       </div>
+  );
+}
+
+export default function PaymentSuccessPage() {
+  return (
+    <>
+      <Header />
+      <Suspense fallback={
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+            <div className="flex justify-center items-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+          </div>
+        </div>
+      }>
+        <PaymentSuccessContent />
+      </Suspense>
       <Footer />
-    </div>
+    </>
   );
 }
