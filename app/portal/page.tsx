@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Header from '@/app/components/header';
 import Footer from '@/app/components/footer';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function DonationPortal() {
   const [donationType, setDonationType] = useState<'one-time' | 'monthly'>('one-time');
@@ -62,9 +63,17 @@ export default function DonationPortal() {
           <p className="text-xl md:text-2xl text-sky-100 mb-4">
             Your donation helps us empower the underprivileged in our community
           </p>
-          <p className="text-lg text-sky-100">
+          <p className="text-lg text-sky-100 mb-8">
             Every contribution, no matter the size, makes a real impact in someone's life.
           </p>
+          
+          {/* Stripe Donation Button */}
+          <Link
+            href="/login/donate"
+            className="inline-block bg-white text-sky-600 px-8 py-4 rounded-xl hover:bg-sky-50 transition duration-200 font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-105"
+          >
+            💝 Donate with Stripe
+          </Link>
         </div>
       </section>
 
