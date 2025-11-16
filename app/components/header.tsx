@@ -28,7 +28,7 @@ export default function Header() {
 
                     {/* Navigation Links */}
                     <div className="hidden md:flex items-center space-x-8">
-                        <Link href="/#team" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Team</Link>
+                        <Link href="/#organizations" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Partners</Link>
                         <Link href="/#initiatives" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Initiatives</Link>
                         {getCurrentUser() ?
                             <button onClick={handleLogout} className="bg-sky-500 text-white px-8 py-3 rounded-lg hover:bg-sky-600 transition font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105">Logout</button> :

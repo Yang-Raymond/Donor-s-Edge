@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GardenBank Conservation Society - Rooting for the Earth",
-  description: "A non-profit organization tackling food disparity and promoting sustainability through school gardens and community resources in Greater Vancouver.",
+  title: "By Your Side Society",
+  description: "Assisting and empowering the underpriveledged for a brighter tomorrow.",
 };
 
 export default function RootLayout({
