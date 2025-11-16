@@ -8,6 +8,7 @@ import {
   Elements,
 } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
+import { updateDonationStats } from "../server/firestore";
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -59,7 +60,7 @@ function CheckoutForm({ amount, onSuccess, onError }: CheckoutFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <PaymentElement />
-      
+
       {errorMessage && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
           {errorMessage}
@@ -120,12 +121,15 @@ export default function StripeCheckout({
         setError(err.message || "Failed to initialize payment");
         onError?.(err.message || "Failed to initialize payment");
       } finally {
+        await updateDonationStats(amount).catch((err) => {
+          console.error("Failed to update donation stats:", err);
+        });
         setLoading(false);
       }
     };
 
     createPaymentIntent();
-  }, [amount, description, onError]);
+  }, []);
 
   if (loading) {
     return (

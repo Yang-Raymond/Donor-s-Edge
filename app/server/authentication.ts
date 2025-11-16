@@ -36,7 +36,6 @@ export const signUpWithEmail = async (
     const userDocRef = doc(db, "users", userCredential.user.uid);
     await setDoc(userDocRef, {
       name: "",
-      address: "",
       totalDonations: 0,
       numTimesDonated: 0,
     });
@@ -64,7 +63,6 @@ export const signInWithGoogle = async (): Promise<UserCredential> => {
     if (!userDoc.exists()) {
       await setDoc(userDocRef, {
         name: userCredential.user.displayName || "",
-        address: "",
         totalDonations: 0,
         numTimesDonated: 0,
       });
