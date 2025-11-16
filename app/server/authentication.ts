@@ -26,6 +26,7 @@ export const signInWithEmail = async (
  */
 export const signUpWithEmail = async (
   email: string,
+  name: string,
   password: string
 ): Promise<UserCredential> => {
   try {
@@ -35,7 +36,7 @@ export const signUpWithEmail = async (
     // Create user document in Firestore
     const userDocRef = doc(db, "users", userCredential.user.uid);
     await setDoc(userDocRef, {
-      name: "",
+      name: name || "",
       totalDonations: 0,
       numTimesDonated: 0,
     });

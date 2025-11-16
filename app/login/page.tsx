@@ -6,7 +6,6 @@ import {
   signInWithEmail,
   signUpWithEmail,
   signInWithGoogle,
-  signOutUser,
   onAuthStateChange,
 } from "../server/authentication";
 import Footer from "../components/footer";
@@ -16,6 +15,7 @@ import { redirect } from "next/navigation";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [user, setUser] = useState<User | null>(null);
@@ -37,7 +37,7 @@ export default function Login() {
 
     try {
       if (isSignUp) {
-        await signUpWithEmail(email, password);
+        await signUpWithEmail(email, name, password);
       } else {
         await signInWithEmail(email, password);
       }
@@ -66,7 +66,7 @@ export default function Login() {
   if (user) {
     return (
       redirect("/portal")
-    ) 
+    )
   }
 
   return (
@@ -85,6 +85,21 @@ export default function Login() {
           )}
 
           <form onSubmit={handleEmailAuth} className="space-y-4">
+            {isSignUp ? <div><label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Name
+            </label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Your name"
+              /> </div> : null}
             <div>
               <label
                 htmlFor="email"
@@ -181,7 +196,7 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
