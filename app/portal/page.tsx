@@ -7,49 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function DonationPortal() {
-  const [donationType, setDonationType] = useState<'one-time' | 'monthly'>('one-time');
-  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
-  const [customAmount, setCustomAmount] = useState<string>('');
-  const [donorInfo, setDonorInfo] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: 'Canada',
-  });
-  const [donationPurpose, setDonationPurpose] = useState<string>('general');
-  const [isAnonymous, setIsAnonymous] = useState(false);
-
-  const predefinedAmounts = [25, 50, 100, 250, 500, 1000];
-
-  const handleDonationSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const finalAmount = customAmount ? parseFloat(customAmount) : selectedAmount;
-    
-    if (!finalAmount || finalAmount <= 0) {
-      alert('Please select or enter a valid donation amount');
-      return;
-    }
-
-    // Here you would integrate with a payment processor like Stripe, PayPal, etc.
-    console.log('Donation Details:', {
-      amount: finalAmount,
-      type: donationType,
-      purpose: donationPurpose,
-      donor: isAnonymous ? 'Anonymous' : donorInfo,
-    });
-
-    alert(`Thank you for your ${donationType} donation of $${finalAmount}!`);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setDonorInfo(prev => ({ ...prev, [name]: value }));
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
       <Header />
@@ -72,304 +29,371 @@ export default function DonationPortal() {
             href="/login/donate"
             className="inline-block bg-white text-sky-600 px-8 py-4 rounded-xl hover:bg-sky-50 transition duration-200 font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-105"
           >
-            💝 Donate with Stripe
+            💝 Donate to ByYourSide Society
           </Link>
-        </div>
-      </section>
-
-      {/* Main Donation Form */}
-      <section className="py-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <form onSubmit={handleDonationSubmit} className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-            
-            {/* Donation Type Selection */}
-            <div className="mb-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Choose Your Donation Type</h2>
-              <div className="grid md:grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setDonationType('one-time')}
-                  className={`p-6 rounded-xl border-2 transition font-semibold text-lg ${
-                    donationType === 'one-time'
-                      ? 'border-sky-500 bg-sky-50 text-sky-700'
-                      : 'border-gray-200 hover:border-sky-300'
-                  }`}
-                >
-                  <div className="text-3xl mb-2">💝</div>
-                  One-Time Donation
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setDonationType('monthly')}
-                  className={`p-6 rounded-xl border-2 transition font-semibold text-lg ${
-                    donationType === 'monthly'
-                      ? 'border-sky-500 bg-sky-50 text-sky-700'
-                      : 'border-gray-200 hover:border-sky-300'
-                  }`}
-                >
-                  <div className="text-3xl mb-2">🔄</div>
-                  Monthly Donation
-                </button>
+          
+          {/* Tax Receipt Information */}
+          <div className="mt-8 max-w-2xl mx-auto bg-white/10 backdrop-blur-sm border-2 border-white/30 rounded-xl p-6">
+            <div className="flex items-start gap-4">
+              <div className="text-3xl">📜</div>
+              <div className="text-left">
+                <h3 className="text-xl font-bold text-white mb-2">Tax Receipt Information</h3>
+                <p className="text-sky-100">
+                  ByYourSide Society is a registered charity. You will receive a tax receipt for your donation via email within 24 hours. 
+                  Tax receipts are issued for donations of $20 or more.
+                </p>
               </div>
-            </div>
-
-            {/* Amount Selection */}
-            <div className="mb-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Select Your Donation Amount</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-                {predefinedAmounts.map((amount) => (
-                  <button
-                    key={amount}
-                    type="button"
-                    onClick={() => {
-                      setSelectedAmount(amount);
-                      setCustomAmount('');
-                    }}
-                    className={`p-6 rounded-xl border-2 transition font-bold text-2xl ${
-                      selectedAmount === amount && !customAmount
-                        ? 'border-sky-500 bg-sky-500 text-white'
-                        : 'border-gray-200 hover:border-sky-300 text-gray-700'
-                    }`}
-                  >
-                    ${amount}
-                  </button>
-                ))}
-              </div>
-              
-              <div className="relative">
-                <label htmlFor="customAmount" className="block text-sm font-medium text-gray-700 mb-2">
-                  Or enter a custom amount:
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-2xl font-bold text-gray-500">$</span>
-                  <input
-                    type="number"
-                    id="customAmount"
-                    name="customAmount"
-                    min="1"
-                    step="0.01"
-                    value={customAmount}
-                    onChange={(e) => {
-                      setCustomAmount(e.target.value);
-                      setSelectedAmount(null);
-                    }}
-                    placeholder="Enter amount"
-                    className="w-full pl-12 pr-4 py-4 border-2 border-gray-300 rounded-xl text-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Donation Purpose */}
-            <div className="mb-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Where should your donation go?</h2>
-              <select
-                name="donationPurpose"
-                value={donationPurpose}
-                onChange={(e) => setDonationPurpose(e.target.value)}
-                className="w-full px-4 py-4 border-2 border-gray-300 rounded-xl text-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-              >
-                <option value="general">General Support</option>
-                <option value="operation-hunger">Operation Hunger</option>
-                <option value="project-warmth">Project Warmth</option>
-                <option value="education">Education Programs</option>
-                <option value="emergency">Emergency Relief</option>
-              </select>
-            </div>
-
-            {/* Anonymous Donation Option */}
-            <div className="mb-10">
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isAnonymous}
-                  onChange={(e) => setIsAnonymous(e.target.checked)}
-                  className="w-5 h-5 text-sky-500 border-gray-300 rounded focus:ring-sky-500"
-                />
-                <span className="ml-3 text-lg text-gray-700 font-medium">
-                  Make this an anonymous donation
-                </span>
-              </label>
-            </div>
-
-            {/* Donor Information */}
-            {!isAnonymous && (
-              <div className="mb-10">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">Your Information</h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-                      First Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="firstName"
-                      name="firstName"
-                      required={!isAnonymous}
-                      value={donorInfo.firstName}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
-                      Last Name *
-                    </label>
-                    <input
-                      type="text"
-                      id="lastName"
-                      name="lastName"
-                      required={!isAnonymous}
-                      value={donorInfo.lastName}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required={!isAnonymous}
-                      value={donorInfo.email}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={donorInfo.phone}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      id="address"
-                      name="address"
-                      value={donorInfo.address}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      id="city"
-                      name="city"
-                      value={donorInfo.city}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700 mb-2">
-                      Postal Code
-                    </label>
-                    <input
-                      type="text"
-                      id="postalCode"
-                      name="postalCode"
-                      value={donorInfo.postalCode}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Tax Receipt Information */}
-            <div className="mb-10 p-6 bg-sky-50 rounded-xl border-2 border-sky-200">
-              <div className="flex items-start gap-4">
-                <div className="text-3xl">📜</div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Tax Receipt Information</h3>
-                  <p className="text-gray-700">
-                    ByYourSide Society is a registered charity. You will receive a tax receipt for your donation via email within 24 hours. 
-                    Tax receipts are issued for donations of $20 or more.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-sky-500 text-white py-5 px-8 rounded-xl hover:bg-sky-600 transition font-bold text-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
-            >
-              Complete Donation {(customAmount || selectedAmount) && `- $${customAmount || selectedAmount}`}
-            </button>
-
-            <p className="text-center text-sm text-gray-500 mt-4">
-              Your donation is secure and encrypted. We respect your privacy.
-            </p>
-          </form>
-        </div>
-      </section>
-
-      {/* Impact Section */}
-      <section className="py-16 px-6 bg-sky-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Your Impact</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-              <div className="text-5xl mb-4">🍽️</div>
-              <h3 className="text-2xl font-bold text-sky-600 mb-3">$25</h3>
-              <p className="text-gray-700">Provides 5 nutritious meals for families in need</p>
-            </div>
-            <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-              <div className="text-5xl mb-4">👕</div>
-              <h3 className="text-2xl font-bold text-sky-600 mb-3">$100</h3>
-              <p className="text-gray-700">Supplies warm clothing for a family during winter</p>
-            </div>
-            <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-              <div className="text-5xl mb-4">📚</div>
-              <h3 className="text-2xl font-bold text-sky-600 mb-3">$250</h3>
-              <p className="text-gray-700">Funds educational resources for underprivileged students</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Other Ways to Help */}
+      {/* Donor Rewards Program */}
+      <section className="py-16 px-6 bg-gradient-to-r from-green-50 to-emerald-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              🎁 Exclusive Donor Rewards Program
+            </h2>
+            <p className="text-xl text-gray-700">
+              As a thank you for your generosity, donors receive access to guaranteed profit opportunities
+            </p>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-12 border-t-4 border-green-500">
+            <div className="grid md:grid-cols-2 gap-8 items-center mb-8">
+              <div>
+                <h3 className="text-3xl font-bold text-gray-900 mb-4">
+                  What You Get as a Donor
+                </h3>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3">
+                    <div className="text-2xl">✅</div>
+                    <div>
+                      <h4 className="font-bold text-lg text-gray-900">Arbitrage Betting Opportunities</h4>
+                      <p className="text-gray-600">Access to risk-free betting strategies that guarantee profit</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="text-2xl">✅</div>
+                    <div>
+                      <h4 className="font-bold text-lg text-gray-900">Profitable Opportunities Delivered</h4>
+                      <p className="text-gray-600">Receive vetted arbitrage opportunities when they're available</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="text-2xl">✅</div>
+                    <div>
+                      <h4 className="font-bold text-lg text-gray-900">Step-by-Step Guidance</h4>
+                      <p className="text-gray-600">Easy-to-follow instructions for each opportunity</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="text-2xl">✅</div>
+                    <div>
+                      <h4 className="font-bold text-lg text-gray-900">Make Your Money Back & More</h4>
+                      <p className="text-gray-600">Potential to recoup your donation through guaranteed profits</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div className="bg-gradient-to-br from-green-100 to-emerald-100 p-8 rounded-xl">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">💰</div>
+                  <h4 className="text-2xl font-bold text-gray-900 mb-2">Win-Win Opportunity</h4>
+                  <p className="text-gray-700 text-lg">
+                    Support a great cause while gaining access to profitable betting opportunities
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What is Arbitrage Betting */}
       <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Other Ways to Help</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-lg border-t-4 border-sky-400">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Volunteer</h3>
-              <p className="text-gray-700 mb-6">
-                Join our team of dedicated volunteers and make a direct impact in your community.
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              📊 What is Arbitrage Betting?
+            </h2>
+            <p className="text-xl text-gray-700">
+              A guaranteed, risk-free way to profit from sports betting
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            <div className="bg-white rounded-2xl shadow-xl p-8 border-l-4 border-blue-500">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">The Concept</h3>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                Arbitrage betting (also known as "arbing" or "sure betting") is a strategy that exploits differences 
+                in odds between different sportsbooks to guarantee a profit regardless of the outcome.
               </p>
-              <a href="#volunteer" className="inline-block bg-sky-500 text-white px-6 py-3 rounded-lg hover:bg-sky-600 transition font-medium">
-                Learn More
-              </a>
+              <p className="text-gray-700 leading-relaxed">
+                By placing bets on all possible outcomes of an event across different bookmakers, you ensure a profit 
+                no matter which team wins or loses.
+              </p>
             </div>
-            <div className="bg-white p-8 rounded-xl shadow-lg border-t-4 border-sky-400">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Corporate Partnerships</h3>
-              <p className="text-gray-700 mb-6">
-                Partner with us to create lasting change and demonstrate your company's commitment to social responsibility.
+
+            <div className="bg-white rounded-2xl shadow-xl p-8 border-l-4 border-green-500">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Why It Works</h3>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                Different sportsbooks have different opinions on the likelihood of outcomes, creating discrepancies 
+                in their odds. When these discrepancies are large enough, they create arbitrage opportunities.
               </p>
-              <a href="#partner" className="inline-block bg-sky-500 text-white px-6 py-3 rounded-lg hover:bg-sky-600 transition font-medium">
-                Get in Touch
-              </a>
+              <p className="text-gray-700 leading-relaxed">
+                <strong>The key:</strong> You're not gambling on who will win—you're taking advantage of mathematical 
+                certainties in the betting market.
+              </p>
+            </div>
+          </div>
+
+          {/* Example */}
+          <div className="bg-gradient-to-r from-blue-50 to-sky-50 rounded-2xl shadow-xl p-8 md:p-12">
+            <h3 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+              📈 Real Example: How Arbitrage Betting Works
+            </h3>
+            
+            <div className="bg-white rounded-xl p-6 mb-6">
+              <h4 className="text-xl font-bold text-gray-900 mb-4">Scenario: NBA Game - Lakers vs. Warriors</h4>
+              
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h5 className="font-bold text-lg mb-2">Sportsbook A</h5>
+                  <p className="text-gray-700">Lakers Win: <span className="font-bold text-blue-600">+220</span> (2.20 odds)</p>
+                </div>
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <h5 className="font-bold text-lg mb-2">Sportsbook B</h5>
+                  <p className="text-gray-700">Warriors Win: <span className="font-bold text-green-600">+200</span> (2.00 odds)</p>
+                </div>
+              </div>
+
+              <div className="bg-yellow-50 border-2 border-yellow-300 rounded-lg p-6">
+                <h5 className="font-bold text-xl mb-3">Your Arbitrage Strategy:</h5>
+                <ul className="space-y-2 mb-4">
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-600 font-bold">✓</span>
+                    Bet $100 on Lakers at Sportsbook A (+220 odds)
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-green-600 font-bold">✓</span>
+                    Bet $100 on Warriors at Sportsbook B (+200 odds)
+                  </li>
+                </ul>
+                <div className="border-t-2 border-yellow-400 pt-4">
+                  <p className="text-lg mb-2"><strong>Total Investment:</strong> $200</p>
+                  <p className="text-lg mb-2">
+                    <strong>If Lakers Win:</strong> Win $220, Lose $100 = 
+                    <span className="text-green-600 font-bold"> $120 Profit</span>
+                  </p>
+                  <p className="text-lg mb-2">
+                    <strong>If Warriors Win:</strong> Win $200, Lose $100 = 
+                    <span className="text-green-600 font-bold"> $100 Profit</span>
+                  </p>
+                  <p className="text-2xl font-bold text-green-600 mt-4">
+                    🎯 Guaranteed Profit Either Way!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center">
+              <p className="text-gray-600 italic">
+                * This is a simplified example. Actual arbitrage opportunities are identified by our system in real-time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why It's a Sure-Fire Win */}
+      <section className="py-16 px-6 bg-gradient-to-r from-purple-50 to-pink-50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center">
+            🔒 Why Arbitrage Betting is a Sure-Fire Win
+          </h2>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <div className="text-5xl mb-4 text-center">🎯</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Zero Risk</h3>
+              <p className="text-gray-700 text-center">
+                You cover all possible outcomes. No matter what happens, you profit. It's mathematics, not luck.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <div className="text-5xl mb-4 text-center">📱</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">We Do the Work</h3>
+              <p className="text-gray-700 text-center">
+                Our system scans thousands of betting lines daily to find and deliver profitable arbitrage opportunities to you.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <div className="text-5xl mb-4 text-center">💵</div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Consistent Returns</h3>
+              <p className="text-gray-700 text-center">
+                Typical returns range from 2-5% per opportunity. Multiple opportunities per week add up quickly.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-12 bg-white rounded-xl shadow-lg p-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+              Important Legal & Ethical Notes
+            </h3>
+            <ul className="space-y-3 max-w-3xl mx-auto">
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 text-xl">✓</span>
+                <p className="text-gray-700">
+                  <strong>100% Legal:</strong> Arbitrage betting is completely legal in jurisdictions where sports betting is legal
+                </p>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 text-xl">✓</span>
+                <p className="text-gray-700">
+                  <strong>Ethical Practice:</strong> You're simply taking advantage of market inefficiencies—the same principle used in financial markets
+                </p>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-green-600 text-xl">✓</span>
+                <p className="text-gray-700">
+                  <strong>No Exploitation:</strong> Sportsbooks set their own odds—you're just being a smart shopper
+                </p>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-blue-600 text-xl">ℹ</span>
+                <p className="text-gray-700">
+                  <strong>Restrictions:</strong> Must be 19+ in Ontario. Responsible gambling practices apply.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* How to Get Started */}
+      <section className="py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center">
+            🚀 How to Get Started
+          </h2>
+          
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-sky-500 flex items-start gap-4">
+              <div className="bg-sky-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                <span className="text-2xl font-bold text-sky-600">1</span>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Make a Donation</h3>
+                <p className="text-gray-700">
+                  Contribute any amount to ByYourSide Society and support our mission to help the underprivileged
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-sky-500 flex items-start gap-4">
+              <div className="bg-sky-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                <span className="text-2xl font-bold text-sky-600">2</span>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Get Access</h3>
+                <p className="text-gray-700">
+                  Receive instant access to our arbitrage betting opportunities platform (coming soon!)
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-sky-500 flex items-start gap-4">
+              <div className="bg-sky-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                <span className="text-2xl font-bold text-sky-600">3</span>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Receive Opportunities</h3>
+                <p className="text-gray-700">
+                  Get profitable arbitrage opportunities delivered to you when they're available
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-sky-500 flex items-start gap-4">
+              <div className="bg-sky-100 rounded-full w-12 h-12 flex items-center justify-center flex-shrink-0">
+                <span className="text-2xl font-bold text-sky-600">4</span>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Place Your Bets</h3>
+                <p className="text-gray-700">
+                  Follow our step-by-step instructions to place bets and lock in guaranteed profits
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link
+              href="/login/donate"
+              className="inline-block bg-sky-600 text-white px-12 py-5 rounded-xl hover:bg-sky-700 transition duration-200 font-bold text-2xl shadow-xl hover:shadow-2xl transform hover:scale-105"
+            >
+              💝 Donate Now & Get Access
+            </Link>
+            <p className="text-gray-600 mt-4">
+              Join our community of donors who give back while earning returns
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 px-6 bg-gray-50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">
+            ❓ Frequently Asked Questions
+          </h2>
+          
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Is this really risk-free?</h3>
+              <p className="text-gray-700">
+                Yes! Arbitrage betting is mathematically guaranteed when executed correctly. You bet on all possible 
+                outcomes, ensuring a profit regardless of the result. However, you must have accounts with multiple 
+                sportsbooks and act quickly on opportunities.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">How much can I make?</h3>
+              <p className="text-gray-700">
+                Returns typically range from 2-5% per arbitrage opportunity. With multiple opportunities per week, 
+                consistent users can see monthly returns of 10-20% or more on their betting capital. The more capital 
+                you have available, the more you can earn.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Do I need betting experience?</h3>
+              <p className="text-gray-700">
+                No! Our platform provides step-by-step instructions for each opportunity. If you can follow directions 
+                and create accounts on sportsbook websites, you can successfully execute arbitrage bets.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">What do I need to get started?</h3>
+              <p className="text-gray-700">
+                You'll need: (1) Accounts on multiple legal sportsbooks, (2) Capital to place bets (we recommend 
+                starting with at least $500-1000), (3) Quick access to your accounts to act on opportunities when they're sent, 
+                and (4) A donation to ByYourSide Society to access our platform.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">When will this feature be available?</h3>
+              <p className="text-gray-700">
+                The arbitrage opportunity platform is currently in development. Early donors will receive priority 
+                access when it launches. Donate now to secure your spot and support our mission!
+              </p>
             </div>
           </div>
         </div>
