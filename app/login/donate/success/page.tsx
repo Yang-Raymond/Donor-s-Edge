@@ -28,7 +28,7 @@ function PaymentSuccessContent() {
    * 
    * Checks for required Stripe payment parameters in the URL.
    * If both payment_intent and payment_intent_client_secret exist,
-   * the payment is considered successful.
+   * the payment is considered successful
    */
   useEffect(() => {
     const paymentIntent = searchParams.get("payment_intent");
