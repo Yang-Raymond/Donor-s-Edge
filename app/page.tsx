@@ -8,13 +8,21 @@ export default function Home() {
       <Header />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6 bg-gradient-to-b from-sky-100 to-white">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 tracking-tight">
+      <section className="relative pt-32 pb-20 px-6 min-h-[500px] flex items-center" style={{
+        backgroundImage: 'url(/banner.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center top',
+        backgroundRepeat: 'no-repeat'
+      }}>
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-sky-500/40 backdrop-blur-[2px]"></div>
+        
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight drop-shadow-lg">
             BYYOURSIDE SOCIETY
           </h1>
-          <p className="text-2xl md:text-3xl text-sky-600 font-medium">
-            SUPPORTING STUDENTS, BUILDING FUTURES
+          <p className="text-2xl md:text-3xl text-white font-medium drop-shadow-md">
+            standing with our community, one person at a time.
           </p>
         </div>
       </section>
@@ -123,12 +131,31 @@ export default function Home() {
       <section className="py-20 px-6 bg-sky-50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-12 text-center">OUR INSTAGRAM</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <div key={i} className="aspect-square bg-gradient-to-br from-sky-300 to-sky-500 rounded-lg hover:scale-105 transition cursor-pointer flex items-center justify-center">
-                <span className="text-4xl">📸</span>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <a 
+              href="https://www.instagram.com/byyoursidesociety" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="aspect-square rounded-lg hover:scale-105 transition cursor-pointer overflow-hidden shadow-lg"
+            >
+              <img src="/BYSSPic1.jpg" alt="ByYourSide Society Event" className="w-full h-full object-cover" />
+            </a>
+            <a 
+              href="https://www.instagram.com/byyoursidesociety" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="aspect-square rounded-lg hover:scale-105 transition cursor-pointer overflow-hidden shadow-lg"
+            >
+              <img src="/BYSSPic2.jpg" alt="ByYourSide Society Event" className="w-full h-full object-cover" />
+            </a>
+            <a 
+              href="https://www.instagram.com/byyoursidesociety" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="aspect-square rounded-lg hover:scale-105 transition cursor-pointer overflow-hidden shadow-lg"
+            >
+              <img src="/BYSSPic3.jpg" alt="ByYourSide Society Event" className="w-full h-full object-cover" />
+            </a>
           </div>
         </div>
       </section>

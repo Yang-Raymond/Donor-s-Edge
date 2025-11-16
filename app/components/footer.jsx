@@ -5,7 +5,7 @@ export default function Footer() {
           <div className="grid md:grid-cols-3 gap-12 mb-12">
             <div>
               <h3 className="text-2xl font-bold mb-4">CONTACT US</h3>
-              <p className="text-gray-300">INFO@BYYOURSSIDE.ORG</p>
+              <p className="text-gray-300">Byyoursidesociety@gmail.com</p>
             </div>
             <div>
               <h3 className="text-2xl font-bold mb-4">QUICK LINKS</h3>
