@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(request: NextRequest) {
   try {
-    const { amount, currency = "usd", description } = await request.json();
+    const { amount, currency = "usd", description, userId, userEmail } = await request.json();
 
     // Validate the amount
     if (!amount || amount < 50) {
@@ -18,11 +18,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate user info for tracking donations
+    if (!userId || !userEmail) {
+      return NextResponse.json(
+        { error: "User information is required" },
+        { status: 400 }
+      );
+    }
+
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount), // Amount in cents
       currency: currency,
       description: description || "Donation",
+      metadata: {
+        userId,
+        userEmail,
+      },
       automatic_payment_methods: {
         enabled: true,
       },

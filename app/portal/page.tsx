@@ -27,9 +27,16 @@ export default function DonationPortal() {
           {/* Stripe Donation Button */}
           <Link
             href="/login/donate"
-            className="inline-block bg-white text-sky-600 px-8 py-4 rounded-xl hover:bg-sky-50 transition duration-200 font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-105"
+            className="inline-block bg-white text-sky-600 px-8 py-4 rounded-xl hover:bg-sky-50 transition duration-200 font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-105 mr-4"
           >
             💝 Donate to ByYourSide Society
+          </Link>
+          
+          <Link
+            href="/portal/opportunities"
+            className="inline-block bg-green-500 text-white px-8 py-4 rounded-xl hover:bg-green-600 transition duration-200 font-bold text-xl shadow-xl hover:shadow-2xl transform hover:scale-105"
+          >
+            🎯 View My Opportunities
           </Link>
           
           {/* Tax Receipt Information */}

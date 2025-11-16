@@ -65,8 +65,14 @@ export default function PaymentSuccessPage() {
 
               <div className="space-y-3">
                 <Link
-                  href="/portal"
+                  href="/portal/opportunities"
                   className="block w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition duration-200 font-medium"
+                >
+                  🎯 View Your Arbitrage Opportunities
+                </Link>
+                <Link
+                  href="/portal"
+                  className="block w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-md hover:bg-gray-200 transition duration-200 font-medium"
                 >
                   Go to Portal
                 </Link>

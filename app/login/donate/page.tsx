@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { User } from "firebase/auth";
+import { onAuthStateChange } from "../../server/authentication";
+import { redirect } from "next/navigation";
 import StripeCheckout from "../../components/stripe-checkout";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
@@ -11,6 +14,21 @@ export default function DonatePage() {
   const [customAmount, setCustomAmount] = useState("");
   const [showCheckout, setShowCheckout] = useState(false);
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Check authentication
+  useEffect(() => {
+    const unsubscribe = onAuthStateChange((currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+      if (!currentUser) {
+        redirect("/login");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const predefinedAmounts = [1000, 2500, 5000, 10000]; // $10, $25, $50, $100
 
@@ -43,6 +61,22 @@ export default function DonatePage() {
   const handleError = (error: string) => {
     console.error("Payment error:", error);
   };
+
+  if (loading) {
+    return (
+      <div>
+        <Header />
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null; // Will redirect to login
+  }
 
   return (
     <div>
@@ -169,6 +203,7 @@ export default function DonatePage() {
                 <StripeCheckout
                   amount={amount}
                   description="Donation"
+                  user={user}
                   onSuccess={handleSuccess}
                   onError={handleError}
                 />

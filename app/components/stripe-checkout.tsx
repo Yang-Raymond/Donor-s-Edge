@@ -8,7 +8,7 @@ import {
   Elements,
 } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
-import { updateDonationStats } from "../server/firestore";
+import { User } from "firebase/auth";
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -81,6 +81,7 @@ function CheckoutForm({ amount, onSuccess, onError }: CheckoutFormProps) {
 interface StripeCheckoutProps {
   amount: number;
   description?: string;
+  user: User; // Current authenticated user
   onSuccess?: () => void;
   onError?: (error: string) => void;
 }
@@ -88,6 +89,7 @@ interface StripeCheckoutProps {
 export default function StripeCheckout({
   amount,
   description,
+  user,
   onSuccess,
   onError,
 }: StripeCheckoutProps) {
@@ -106,6 +108,8 @@ export default function StripeCheckout({
             amount,
             currency: "usd",
             description,
+            userId: user.uid,
+            userEmail: user.email,
           }),
         });
 
@@ -121,15 +125,12 @@ export default function StripeCheckout({
         setError(err.message || "Failed to initialize payment");
         onError?.(err.message || "Failed to initialize payment");
       } finally {
-        await updateDonationStats(amount).catch((err) => {
-          console.error("Failed to update donation stats:", err);
-        });
         setLoading(false);
       }
     };
 
     createPaymentIntent();
-  }, []);
+  }, [amount, description, user, onError]);
 
   if (loading) {
     return (
