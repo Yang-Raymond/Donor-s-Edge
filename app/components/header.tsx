@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Header() {
     return (
@@ -17,7 +18,7 @@ export default function Header() {
                     <div className="hidden md:flex items-center space-x-8">
                         <a href="#team" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Team</a>
                         <a href="#initiatives" className="text-gray-700 hover:text-gray-900 transition font-medium">Our Initiatives</a>
-                        <a href="#apply" className="bg-sky-500 text-white px-8 py-3 rounded-lg hover:bg-sky-600 transition font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105">Donor's Edge</a>
+                        <Link href="/login" className="bg-sky-500 text-white px-8 py-3 rounded-lg hover:bg-sky-600 transition font-bold text-lg shadow-lg hover:shadow-xl transform hover:scale-105">Donor's Edge</Link>
                     </div>
                 </div>
             </div>
